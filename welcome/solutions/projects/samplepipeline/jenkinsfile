@@ -9,10 +9,20 @@ pipeline {
     }
 
     stages {
+        stage('Get git url'){
+            steps {
+                script {
+                    def gitInput = input message: 'enter git URL:',
+                                        parameters:[string(name:'url')]
+                    println(gitInput)
+                    env.GITURL=gitInput
+                }
+            }
+        }
         stage('Clone Flask Project') {
             steps {
                 // Use the Git plugin to clone the repository
-                git branch: 'jenkins-workshop', url: 'https://github.com/uriel-be/devopshift-welcome.git'
+                git branch: 'jenkins-workshop', url: env.GITURL
             }
         }
 
